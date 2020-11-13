@@ -1,22 +1,36 @@
+let changeSceneButton;
+let poisonFoodButton;
 let food = [];
 let blobs = [];
 let spawnedFood = 200;
 let showDia = false;
+let poisonFood = true;
 let dia;
 let genauigkeit = 1;
 let count = 0;
 let round = 0;
+
+let infektionszeit;//In runden angeben
+
 function setup(){
-   createCanvas(displayWidth, displayHeight);
-  let fs = fullscreen();
-  fullscreen(fs);
+  changeSceneButton = select('#change_button');
+  poisonFoodButton = select('#vergiftetes_essen_button');
+  createCanvas(displayWidth, displayHeight);
   spawnFood();
+  spawnBlob();
   spawnBlob();
   dia = new Diagramm(0, 0, width, height);
   dia.addInfo(0);
+  changeSceneButton.mousePressed(changeSceneButtonPressed);
+  poisonFoodButton.mousePressed(setPoisonFood);
+  infektionszeit = 3;//Runden
 }
-function mousePressed(){
+function changeSceneButtonPressed(){
   showDia = !showDia;
+}
+function setPoisonFood(){
+  poisonFood = !poisonFood;
+  print('Poinsonfood =', poisonFood);
 }
 function draw(){
   if(showDia){
@@ -66,6 +80,7 @@ function testIfHaveFood(){
   }
   if(bool){
     for(let i = blobs.length-1; i >= 0; i--){
+      blobs[i].nextRound();
       if(blobs[i].foodCount == 0){
         //Tot
         blobs.splice(i, 1);

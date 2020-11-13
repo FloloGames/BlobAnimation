@@ -3,11 +3,25 @@ class Blob {
     this.loc = createVector(x, y);
     this.startLoc = createVector(x, y);
     this.foodCount = 0;
+    this.infected = false;
+    this.infektionszeit = 0;
     this.canMove = true;
     this.radius = 30;
   }
+  nextRound(){
+    if(this.infected && poisonFood){
+      this.infektionszeit++;
+      if(this.infektionszeit >= infektionszeit){
+        blobs.splice(this, 1);
+      }
+    }
+  }
   show(){
-    fill(150, 130, 55);
+    if(this.infected && poisonFood){
+      fill(150, 200, 55);
+    } else {
+      fill(150, 130, 55);
+    }
     stroke(0);
     strokeWeight(1);
     ellipse(this.loc.x, this.loc.y, this.radius);
@@ -29,17 +43,25 @@ class Blob {
         dir.mult(3);
         this.loc.add(dir);
         let d = dist(this.loc.x, this.loc.y, food[winner].loc.x, food[winner].loc.y);
+
         if(d <= this.radius/2+food[winner].radius/2){
+          if(food[winner].infected == true && poisonFood){
+            if(this.infected == false){
+              this.infected = true;
+            } else {
+              splice(this, 1);
+            }
+          }
           food.splice(winner, 1);
           this.foodCount++;
         }
-        stroke(255);
-        strokeWeight(2);
-        line(this.loc.x, this.loc.y, tar.x, tar.y);
+        // stroke(255);
+        // strokeWeight(2);
+        // line(this.loc.x, this.loc.y, tar.x, tar.y);
       } else {
-        stroke(255);
-        strokeWeight(2);
-        line(this.loc.x, this.loc.y, this.startLoc.x, this.startLoc.y);
+        // stroke(255);
+        // strokeWeight(2);
+        // line(this.loc.x, this.loc.y, this.startLoc.x, this.startLoc.y);
         let dir = p5.Vector.sub(this.startLoc, this.loc);
         dir.normalize();
         dir.mult(3);
