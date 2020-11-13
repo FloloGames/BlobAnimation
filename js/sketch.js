@@ -15,7 +15,7 @@ function setup(){
   dia = new Diagramm(0, 0, width, height);
   dia.addInfo(0);
 }
-function keyPressed(){
+function mousePressed(){
   showDia = !showDia;
 }
 function draw(){
